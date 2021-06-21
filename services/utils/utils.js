@@ -1,7 +1,6 @@
 "use strict";
 const request = require("request");
 const contentTypeParser = require("content-type-parser");
-const RssParser = require("rss-parser");
 const CsvParser = require("csv-parse/lib/sync");
 const urlRegEx = /((([A-Za-z]{3,9}:(?:\/\/)?)(?:[\-;:&=\+\$,\w]+@)?[A-Za-z0-9\.\-]+|(?:www\.|[\- ;:&=\+\$,\w]+@)[A-Za-z0-9\.\-]+)((?:\/[\+~%\/\.\w\-]*)?\??(?:[\-\+=&;%@\.\w]*)#?(?:[\.\!\/\\\w]*))?)/g;
 const URL_REGEXP = new RegExp(urlRegEx);
@@ -26,11 +25,6 @@ const resolveDataFromRequest = async ctx => {
 const getItemsFromData = ({ dataType, body, options }) =>
   new Promise(async (resolve, reject) => {
     const parsedContentType = contentTypeParser(dataType);
-    if (parsedContentType.isXML()) {
-      const parser = new RssParser();
-      const feed = await parser.parseString(body);
-      return resolve({ sourceType: "rss", items: feed.items });
-    }
     if (dataType === "text/csv" || dataType === "application/vnd.ms-excel") {
       const items = CsvParser(body, {
         ...options,

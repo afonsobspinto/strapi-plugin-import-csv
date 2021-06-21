@@ -1,11 +1,11 @@
 {
-  "name": "strapi-plugin-import-relations",
+  "name": "strapi-plugin-import-csv",
   "version": "0.0.0",
   "description": "This is the description of the plugin.",
   "strapi": {
-    "name": "Import Relations",
+    "name": "Import CSV",
     "icon": "plug",
-    "description": "Description of import-relations plugin."
+    "description": "Description of import-csv plugin."
   },
   "dependencies": {},
   "author": {

@@ -1,16 +1,16 @@
 'use strict';
 
 /**
- * import-relations.js controller
+ * import-csv.js controller
  *
- * @description: A set of functions called "actions" of the `import-relations` plugin.
+ * @description: A set of functions called "actions" of the `import-csv` plugin.
  */
 
 module.exports = {
   preAnalyzeImportFile: async ctx => {
-    const services = strapi.plugins["import-relations"].services;
+    const services = strapi.plugins["import-csv"].services;
     try {
-      const data = await services["import-relations"].preAnalyzeImportFile(ctx);
+      const data = await services["import-csv"].preAnalyzeImportFile(ctx);
       ctx.send(data);
     } catch (error) {
       console.error(error);
@@ -19,18 +19,18 @@ module.exports = {
     }
   },
   create: async ctx => {
-    const services = strapi.plugins["import-relations"].services;
+    const services = strapi.plugins["import-csv"].services;
     const importConfig = ctx.request.body;
     importConfig.ongoing = true;
     const record = await strapi
-      .query("importconfig", "import-relations")
+      .query("importconfig", "import-csv")
       .create(importConfig);
-    await services["import-relations"].importItems(record, ctx);
+    await services["import-csv"].importItems(record, ctx);
     ctx.send(record);
   },
 
   index: async ctx => {
-    const entries = await strapi.query("importconfig", "import-relations").find();
+    const entries = await strapi.query("importconfig", "import-csv").find();
     const withCounts = entries.map(entry => ({
       ...entry,
       importedCount: entry.importeditems.length,
@@ -57,13 +57,13 @@ module.exports = {
     }
   },
   undo: async ctx => {
-    const services = strapi.plugins["import-relations"].services;
+    const services = strapi.plugins["import-csv"].services;
     const importId = ctx.params.importId;
     const importConfig = await strapi
-      .query("importconfig", "import-relations")
+      .query("importconfig", "import-csv")
       .findOne({ id: importId });
     console.log("undo", importId);
-    await services["import-relations"].undoItems(importConfig);
+    await services["import-csv"].undoItems(importConfig);
     ctx.send(importConfig);
   }
 };

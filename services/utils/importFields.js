@@ -1,10 +1,10 @@
 
 
 const importFields = async (sourceItem, fieldMapping, cache) => {
-  const { SOURCE_IDENTIFIER } = strapi.plugins["import-relations"].config;
+  const { SOURCE_IDENTIFIER } = strapi.plugins["import-csv"].config;
 
   const updatedItem = {importing: true};
-  
+
   let mg_id
   for (const sourceField of Object.keys(fieldMapping)) {
     const { destination, collection, collectionCol } = fieldMapping[sourceField];

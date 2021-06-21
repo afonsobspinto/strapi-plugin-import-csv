@@ -24,7 +24,7 @@ class HistoryPage extends Component {
   deleteImport = async id => {
     this.setState({ loading: true }, async () => {
       try {
-        await request(`/import-relations/${id}`, { method: "DELETE" });
+        await request(`/import-csv/${id}`, { method: "DELETE" });
 
         this.setState(prevState => ({
           ...prevState,
@@ -44,7 +44,7 @@ class HistoryPage extends Component {
 
   undoImport = async id => {
     this.setState({ loading: true }, async () => {
-      await request(`/import-relations/${id}/undo`, { method: "POST" });
+      await request(`/import-csv/${id}/undo`, { method: "POST" });
       this.setState({ loading: false }, () => {
         strapi.notification.info(`Undo Started`);
       });
@@ -76,7 +76,7 @@ class HistoryPage extends Component {
 
   getConfigs = async () => {
     try {
-      const response = await request("/import-relations", { method: "GET" });
+      const response = await request("/import-csv", { method: "GET" });
       return response;
     } catch (e) {
       strapi.notification.error(`${e}`);
@@ -88,7 +88,7 @@ class HistoryPage extends Component {
     return (
       <div className={"container-fluid"} style={{ padding: "18px 30px" }}>
         <PluginHeader
-          title={"Import Relations"}
+          title={"Import CSV"}
           description={"Import CSV Content Types"}
         />
         <HeaderNav

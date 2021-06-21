@@ -1,7 +1,7 @@
 'use strict';
 
 /**
- * import-relations.js service
+ * import-csv.js service
  *
  * @description: A set of functions similar to controller's actions to avoid code duplication.
  */
@@ -59,7 +59,7 @@ module.exports = {
   },
   importItems: (importConfig, ctx) =>
     new Promise(async (resolve, reject) => {
-      const { SOURCE_IDENTIFIER } = strapi.plugins["import-relations"].config;
+      const { SOURCE_IDENTIFIER } = strapi.plugins["import-csv"].config;
       const { dataType, body } = await resolveDataFromRequest(ctx);
       try {
         const { items } = await getItemsFromData({

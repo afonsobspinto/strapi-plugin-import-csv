@@ -48,7 +48,7 @@ class HomePage extends Component {
     this.analysisConfig = analysisConfig;
     this.setState({ analyzing: true }, async () => {
       try {
-        const response = await request("/import-relations/preAnalyzeImportFile", {
+        const response = await request("/import-csv/preAnalyzeImportFile", {
           method: "POST",
           body: analysisConfig
         });
@@ -110,7 +110,7 @@ class HomePage extends Component {
     }
 
     try {
-      await request("/import-relations", { method: "POST", body: importConfig });
+      await request("/import-csv", { method: "POST", body: importConfig });
       this.setState({ saving: false }, () => {
         strapi.notification.info("Import started");
       });
@@ -140,7 +140,7 @@ class HomePage extends Component {
     return loading ? <LoadingIndicator/> :
     <div className={"container-fluid"} style={{ padding: "18px 30px" }}>
       <PluginHeader
-        title={"Import Relations"}
+        title={"Import CSV"}
         description={"Import CSV"}
       />
       <HeaderNav
