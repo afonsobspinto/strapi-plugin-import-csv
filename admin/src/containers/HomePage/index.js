@@ -48,6 +48,7 @@ class HomePage extends Component {
     this.analysisConfig = analysisConfig;
     this.setState({analyzing: true}, async () => {
       try {
+        strapi.notification.info('Analyze Started');
         const response = await request("/import-csv/preAnalyzeImportFile", {
           method: "POST",
           body: analysisConfig
@@ -115,18 +116,19 @@ class HomePage extends Component {
     };
 
     if (importState === IMPORT_STATE.relations && this.checksRelationRequirements(fieldMapping) || importState === IMPORT_STATE.content) {
-      try {
-        this.setState({loading: true}, () => {
-          strapi.notification.info('import started');
-        })
-        const response = await request("/import-csv", {method: "POST", body: importConfig});
-        this.setState({loading: false}, () => {
-          strapi.notification.info(response.status);
-        });
-      } catch (e) {
-        strapi.notification.error(`${e}`);
-        this.setState({loading: false});
-      }
+      this.setState({loading: true}, async () => {
+          try {
+            strapi.notification.info('Import Started');
+            await request("/import-csv", {method: "POST", body: importConfig});
+            this.setState({loading: false}, () => {
+              strapi.notification.success('Imported Successfully');
+            });
+          } catch (e) {
+            strapi.notification.error(`${e}`);
+            this.setState({loading: false});
+          }
+        }
+      )
     }
   };
 
@@ -203,7 +205,8 @@ class HomePage extends Component {
           </Row>
         )}
       </div>
-  };
+  }
+  ;
 }
 
 export default memo(HomePage);

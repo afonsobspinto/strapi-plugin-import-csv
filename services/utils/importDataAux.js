@@ -39,7 +39,7 @@ const importRelations = async (sourceItem, fieldMapping, cache) => {
   return {mg_id, updatedItem};
 };
 
-const importDataAux = async (sourceItem, fieldMapping) => {
+const importFields = (sourceItem, fieldMapping) => {
   const importedItem = {};
   for (const sourceField of Object.keys(fieldMapping)) {
     const { destination } = fieldMapping[sourceField];
@@ -52,6 +52,6 @@ const importDataAux = async (sourceItem, fieldMapping) => {
 };
 
 module.exports = {
-  importFields: importDataAux,
+  importFields,
   importRelations
 };
