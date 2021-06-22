@@ -14,10 +14,11 @@ import { Select, Label } from "@buffetjs/core";
 import { get, has, isEmpty, pickBy, set } from "lodash";
 import MappingTable from "../../components/MappingTable";
 import { Button } from "@buffetjs/core";
-import {ID_MAPPING} from "../../utils/constants"
+import {ID_MAPPING, IMPORT_STATE} from "../../utils/constants"
+import Tab from '@material-ui/core/Tab';
+import Tabs from '@material-ui/core/Tabs';
 
-const getUrl = to =>
-  to ? `/plugins/${pluginId}/${to}` : `/plugins/${pluginId}`;
+
 
 
 class HomePage extends Component {
@@ -29,7 +30,8 @@ class HomePage extends Component {
     analyzing: false,
     analysis: null,
     selectedContentType: "",
-    fieldMapping: {}
+    fieldMapping: {},
+    importState: IMPORT_STATE.content
   };
 
 
@@ -134,8 +136,12 @@ class HomePage extends Component {
     this.setState({ fieldMapping });
   };
 
+  handleChange = (_, newValue) => {
+    this.setState({importState: newValue})
+  }
+
   render() {
-    const {loading} = this.state
+    const {loading, importState} = this.state
 
     return loading ? <LoadingIndicator/> :
     <div className={"container-fluid"} style={{ padding: "18px 30px" }}>
@@ -143,19 +149,10 @@ class HomePage extends Component {
         title={"Import CSV"}
         description={"Import CSV"}
       />
-      <HeaderNav
-        links={[
-          {
-            name: "Import Data",
-            to: getUrl("")
-          },
-/*          {
-            name: "Import History",
-            to: getUrl("history")
-          }*/
-        ]}
-        style={{ marginTop: "4.4rem" }}
-      />
+      <Tabs value={importState} onChange={this.handleChange} style={{ marginTop: "4.4rem" }}>
+        <Tab label="Import Content" importState={IMPORT_STATE.content}/>
+        <Tab label="Import Relations" importState={IMPORT_STATE.relations}/>
+      </Tabs>
       <div className="row">
         <Block
           title="General"
@@ -188,6 +185,7 @@ class HomePage extends Component {
             targetModel={this.getTargetModel()}
             models={this.state.models}
             onChange={this.setFieldMapping}
+            importState={importState}
           />
           <Button
             style={{ marginTop: 12 }}

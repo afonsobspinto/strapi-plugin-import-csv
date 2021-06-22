@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import MappingOptions from "./MappingOptions";
 import TargetFieldSelect from "./TargetFieldSelect";
 import CollectionFieldSelect from "./CollectionFieldSelect";
-import {ID_MAPPING} from "../../utils/constants"
+import {ID_MAPPING, IMPORT_STATE} from "../../utils/constants"
 import _, {get, has} from "lodash";
 import { Table } from "@buffetjs/core";
 import {
@@ -35,10 +35,10 @@ class MappingTable extends Component {
     return models.find(model => model.apiID === modelName);
   };
 
-  CustomRow = ({ row }) => {
+  CustomRow = ({ row, importState }) => {
 
     const { fieldName, count, format, minLength, maxLength, meanLength } = row;
-
+    const showExtraCols = importState === IMPORT_STATE.relations
     return (
       <tr style={{ paddingTop: 18 }}>
         <td>{fieldName}</td>
@@ -80,7 +80,7 @@ class MappingTable extends Component {
           )}
         </td>
         <td>
-          {this.props.models && (
+          {showExtraCols && this.props.models && (
             <CollectionFieldSelect
               models={this.props.models}
               onChange={targetCollection => this.setMapping(fieldName, targetCollection, headersMapping.COLLECTION)}
@@ -88,7 +88,7 @@ class MappingTable extends Component {
           )}
         </td>
         <td>
-          {this.props.models && (
+          {showExtraCols && this.props.models && (
             <TargetFieldSelect
               targetModel={this.getRelatedModel(fieldName)}
               onChange={targetCollection => this.setMapping(fieldName, targetCollection, headersMapping.COLLECTION_COL)}
@@ -116,14 +116,19 @@ class MappingTable extends Component {
     this.setState(state, () => this.props.onChange(this.state.mapping));
   };
 
-  render() {
-    const { analysis } = this.props;
-    const props = {
-      title: "Field Mapping",
-      subtitle:
-        "Configure the Relationship between CSV Fields and Content type Fields"
-    };
-    const headers = [
+  getHeaders = () => {
+    const {importState } = this.props;
+
+    return importState === IMPORT_STATE.content ? [
+      { name: "Field", value: "fieldName" },
+      { name: "Count", value: "count" },
+      { name: "Format", value: "format" },
+      { name: "Min Length", value: "minLength" },
+      { name: "Max Length", value: "maxLength" },
+      { name: "Mean Length", value: "meanLength" },
+      { name: "Options", value: "options" },
+      { name: "Destination", value: "destination" }
+    ] : [
       { name: "Field", value: "fieldName" },
       { name: "Count", value: "count" },
       { name: "Format", value: "format" },
@@ -135,13 +140,29 @@ class MappingTable extends Component {
       { name: "Related Collection", value: headersMapping.COLLECTION},
       { name: "Related Column", value: headersMapping.COLLECTION_COL }
     ];
+  }
+
+  getCustomRow = ({ row }) => {
+    const { importState} = this.props;
+    return this.CustomRow({ row, importState })
+
+  }
+
+  render() {
+    const { analysis} = this.props;
+    const props = {
+      title: "Field Mapping",
+      subtitle:
+        "Configure the Relationship between CSV Fields and Content type Fields"
+    };
+    const headers = this.getHeaders()
     const items = [...analysis.fieldStats];
     return (
       <Table
         {...props}
         headers={headers}
         rows={items}
-        customRow={this.CustomRow}
+        customRow={this.getCustomRow}
       />
 
     );
