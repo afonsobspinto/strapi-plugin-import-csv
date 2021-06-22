@@ -1,13 +1,20 @@
 {
-  "name": "strapi-plugin-import-relations",
+  "name": "strapi-plugin-import-csv",
   "version": "0.0.0",
   "description": "This is the description of the plugin.",
   "strapi": {
-    "name": "Import Relations",
+    "name": "Import CSV",
     "icon": "plug",
-    "description": "Description of import-relations plugin."
+    "description": "Description of import-csv plugin."
   },
-  "dependencies": {},
+  "dependencies": {
+    "@material-ui/core": "^4.11.4",
+    "content-type-parser": "^1.0.2",
+    "csv-parse": "^4.16.0",
+    "get-urls": "^10.0.0",
+    "simple-statistics": "^7.7.0",
+    "striptags": "^3.2.0"
+  },
   "author": {
     "name": "A Strapi developer",
     "email": "",
