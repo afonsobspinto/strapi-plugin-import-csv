@@ -35,10 +35,10 @@ class MappingTable extends Component {
     return models.find(model => model.apiID === modelName);
   };
 
-  CustomRow = ({ row, importState }) => {
+  CustomRow = ({ row }) => {
 
     const { fieldName, count, format, minLength, maxLength, meanLength } = row;
-    const showExtraCols = importState === IMPORT_STATE.relations
+    const showExtraCols = this.props.importState === IMPORT_STATE.relations
     return (
       <tr style={{ paddingTop: 18 }}>
         <td>{fieldName}</td>
@@ -69,7 +69,7 @@ class MappingTable extends Component {
             targetModel={this.props.targetModel}
             stat={row}
             onChange={this.changeMappingOptions(row)}
-            importState
+            importState={this.props.importState}
           />
         </td>
         <td>
@@ -150,11 +150,6 @@ class MappingTable extends Component {
     ];
   }
 
-  getCustomRow = ({ row }) => {
-    const { importState} = this.props;
-    return this.CustomRow({ row, importState })
-  }
-
   render() {
     const { analysis} = this.props;
     const props = {
@@ -169,7 +164,7 @@ class MappingTable extends Component {
         {...props}
         headers={headers}
         rows={items}
-        customRow={this.getCustomRow}
+        customRow={this.CustomRow}
       />
 
     );
