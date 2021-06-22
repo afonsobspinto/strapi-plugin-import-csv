@@ -8,7 +8,11 @@
     "description": "Description of import-csv plugin."
   },
   "dependencies": {
-    "@material-ui/core": "^4.11.4"
+    "@material-ui/core": "^4.11.4",
+    "content-type-parser": "^1.0.2",
+    "csv-parse": "^4.16.0",
+    "get-urls": "^10.0.0",
+    "simple-statistics": "^7.7.0"
   },
   "author": {
     "name": "A Strapi developer",
