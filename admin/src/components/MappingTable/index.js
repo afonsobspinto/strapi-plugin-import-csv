@@ -145,7 +145,6 @@ class MappingTable extends Component {
   getCustomRow = ({ row }) => {
     const { importState} = this.props;
     return this.CustomRow({ row, importState })
-
   }
 
   render() {

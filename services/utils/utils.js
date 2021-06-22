@@ -67,9 +67,13 @@ const urlIsMedia = url => {
     return false;
   }
 };
+
+const IMPORT_ACTION = Object.freeze({"content":0, "relations":1})
+
 module.exports = {
   resolveDataFromRequest,
   getItemsFromData,
   stringIsEmail,
-  urlIsMedia
+  urlIsMedia,
+  IMPORT_ACTION
 };
