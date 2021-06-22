@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import MappingOptions from "./MappingOptions";
 import TargetFieldSelect from "./TargetFieldSelect";
 import CollectionFieldSelect from "./CollectionFieldSelect";
-import {ID_MAPPING, IMPORT_STATE} from "../../utils/constants"
+import {ID_MAPPING, IMPORT_STATE, MATCH_ON_KEY} from "../../utils/constants"
 import _, {get, has} from "lodash";
 import { Table } from "@buffetjs/core";
 import {
@@ -69,6 +69,7 @@ class MappingTable extends Component {
             targetModel={this.props.targetModel}
             stat={row}
             onChange={this.changeMappingOptions(row)}
+            importState
           />
         </td>
         <td>
@@ -101,6 +102,13 @@ class MappingTable extends Component {
   };
   changeMappingOptions = stat => options => {
     let newState = _.cloneDeep(this.state);
+    if(options[MATCH_ON_KEY]){
+      for(let key in newState['mapping']){
+        if(newState['mapping'][key][MATCH_ON_KEY]){
+          delete newState['mapping'][key][MATCH_ON_KEY]
+        }
+      }
+    }
     for (let key in options) {
       _.set(newState, `mapping[${stat.fieldName}][${key}]`, options[key]);
     }

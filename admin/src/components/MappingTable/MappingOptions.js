@@ -1,9 +1,10 @@
-import React, { Component } from "react";
+import React from "react";
 import TargetFieldSelect from "./TargetFieldSelect";
 import { Label } from "@buffetjs/core";
+import {IMPORT_STATE, MATCH_ON_KEY} from "../../utils/constants";
 
-const MappingOptions = ({ stat, onChange, targetModel }) => {
-  return (
+const MappingOptions = ({ stat, onChange, targetModel, importState }) => {
+  return importState === IMPORT_STATE.content ? (
     <div>
       {stat.format === "xml" && (
         <div>
@@ -31,7 +32,16 @@ const MappingOptions = ({ stat, onChange, targetModel }) => {
         </div>
       )}
     </div>
-  );
+  ) :
+    <div>
+    <Label htmlFor={"MatchOnIDRadio"} message={"Match on"} />
+    <input
+      name={"MatchOnIDRadio"}
+      type="radio"
+      onChange={e => onChange({ [MATCH_ON_KEY]: e.target.checked })}
+    />
+  </div>
+
 };
 
 export default MappingOptions;

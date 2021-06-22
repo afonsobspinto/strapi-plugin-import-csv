@@ -69,11 +69,13 @@ const urlIsMedia = url => {
 };
 
 const IMPORT_ACTION = Object.freeze({"content":0, "relations":1})
+const ID_KEY = "matchOnID"
 
 module.exports = {
   resolveDataFromRequest,
   getItemsFromData,
   stringIsEmail,
   urlIsMedia,
-  IMPORT_ACTION
+  IMPORT_ACTION,
+  ID_KEY
 };

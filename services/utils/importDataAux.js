@@ -1,10 +1,10 @@
+const {ID_KEY} = require("./utils");
 
 const importRelations = async (sourceItem, fieldMapping, cache) => {
-  const { SOURCE_IDENTIFIER } = strapi.plugins["import-csv"].config;
 
-  const updatedItem = {importing: true};
+  let uid
+  const updatedItem = {};
 
-  let mg_id
   for (const sourceField of Object.keys(fieldMapping)) {
     const { destination, collection, collectionCol } = fieldMapping[sourceField];
     const entryValue = sourceItem[sourceField]
@@ -12,8 +12,8 @@ const importRelations = async (sourceItem, fieldMapping, cache) => {
       continue;
     }
     if (!destination || destination === "none" || !collection || collection === "none" || !collectionCol || collectionCol === "none" ) {
-      if (destination === SOURCE_IDENTIFIER){
-        mg_id = entryValue
+      if (Object.keys(fieldMapping[sourceField]).includes(ID_KEY)){
+        uid = entryValue
       }
       continue;
     }
@@ -36,7 +36,7 @@ const importRelations = async (sourceItem, fieldMapping, cache) => {
     }
     updatedItem[destination] = relatedStrapi;
   }
-  return {mg_id, updatedItem};
+  return {uid, updatedItem};
 };
 
 const importFields = (sourceItem, fieldMapping) => {

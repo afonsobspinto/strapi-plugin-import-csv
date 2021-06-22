@@ -14,7 +14,7 @@ import {Select, Label} from "@buffetjs/core";
 import {get, has} from "lodash";
 import MappingTable from "../../components/MappingTable";
 import {Button} from "@buffetjs/core";
-import {ID_MAPPING, IMPORT_STATE} from "../../utils/constants"
+import {IMPORT_STATE, MATCH_ON_KEY} from "../../utils/constants"
 import Tab from '@material-ui/core/Tab';
 import Tabs from '@material-ui/core/Tabs';
 
@@ -96,9 +96,9 @@ class HomePage extends Component {
   };
 
   checksRelationRequirements = (fieldMapping) => {
-    const containsID = Object.keys(fieldMapping).find(key => fieldMapping[key].destination === ID_MAPPING)
-    if (!containsID) {
-      strapi.notification.error(`uid mapping required`);
+    const containsMatchingID = Object.keys(fieldMapping).find(key => fieldMapping[key][MATCH_ON_KEY])
+    if (!containsMatchingID) {
+      strapi.notification.error(`Match on ID is required`);
       this.setState({loading: false});
       return false
     }

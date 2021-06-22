@@ -9,6 +9,7 @@
 const {resolveDataFromRequest, getItemsFromData, IMPORT_ACTION} = require("./utils/utils");
 const analyzer = require("./utils/analyzer");
 const _ = require("lodash");
+const {ID_KEY} = require("./utils/utils");
 const {importRelations, importFields} = require("./utils/importDataAux");
 
 const merge = (current, toAdd) => {
@@ -33,12 +34,12 @@ const getItemsMap = async (items, fieldMapping) => {
   const cache = {}
   const map = {}
   for (const item of items) {
-    const {mg_id, updatedItem} = await importRelations(
+    const {uid, updatedItem} = await importRelations(
       item,
       fieldMapping,
       cache
     );
-    map[mg_id] = merge(mg_id in map ? map[mg_id] : null, updatedItem)
+    map[uid] = merge(uid in map ? map[uid] : null, updatedItem)
   }
   return map
 }
@@ -57,15 +58,14 @@ module.exports = {
   },
   importItems: (ctx) =>
     new Promise(async (resolve, reject) => {
-      const {SOURCE_IDENTIFIER} = strapi.plugins["import-csv"].config;
       const {options, fieldMapping, contentType, importState} = ctx.request.body
       const {dataType, body} = await resolveDataFromRequest(ctx);
-
+      const updateOn = Object.keys(fieldMapping).find(key => fieldMapping[key][ID_KEY])
       async function addRelations(items) {
         const itemsMap = await getItemsMap(items, fieldMapping)
         for (const item in itemsMap) {
           try {
-            await strapi.services[contentType].update({[SOURCE_IDENTIFIER]: item}, itemsMap[item]);
+            await strapi.services[contentType].update({[updateOn]: item}, itemsMap[item]);
           } catch (error) {
             console.error(item)
           }
@@ -95,7 +95,6 @@ module.exports = {
         }else{
           await createEntities(items)
         }
-
         resolve({
           status: "Import Completed Successfully",
         })
