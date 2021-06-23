@@ -1,5 +1,7 @@
 # strapi-plugin-import-csv
 strapi plugin to import csv (that works with relations and file upload)
+Based on [how-to-create-an-import-content-plugin](https://strapi.io/blog/how-to-create-an-import-content-plugin-part-1-4)
+
 
 # How to install
 
@@ -22,7 +24,3 @@ strapi plugin to import csv (that works with relations and file upload)
 ("Match on" referes to what column should be used as identifier of the entity to update and therefore it is required)
 
 ![image](https://user-images.githubusercontent.com/19196034/123140077-cc984180-d44e-11eb-9ad6-0451d47c6279.png)
-
-
-
-Based on [how-to-create-an-import-content-plugin](https://strapi.io/blog/how-to-create-an-import-content-plugin-part-1-4)
