@@ -28,3 +28,14 @@ Based on [how-to-create-an-import-content-plugin](https://strapi.io/blog/how-to-
 ("Match on" referes to what column should be used as identifier of the entity to update and therefore it is required)
 
 ![image](https://user-images.githubusercontent.com/19196034/123140077-cc984180-d44e-11eb-9ad6-0451d47c6279.png)
+
+# Gotchas
+
+The plugin was created to be used once and was used in a very custom context.
+UI/UX & error handling could use some work.
+
+# FAQ
+
+- > Why import as media is not showing up?
+
+Is your [url link supported](https://github.com/afonsobspinto/strapi-plugin-import-csv/blob/3fcc107c21ec1e055ddf1d1aa1e7b7e5181b6023/services/utils/utils.js#L39)?
