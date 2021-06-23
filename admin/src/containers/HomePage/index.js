@@ -119,9 +119,13 @@ class HomePage extends Component {
       this.setState({loading: true}, async () => {
           try {
             strapi.notification.info('Import Started');
-            await request("/import-csv", {method: "POST", body: importConfig});
+            const res = await request("/import-csv", {method: "POST", body: importConfig});
             this.setState({loading: false}, () => {
-              strapi.notification.success('Imported Successfully');
+              if(res.status === 200){
+                strapi.notification.success('Imported Successfully');
+              }else{
+                strapi.notification.error('Oops! Something went wrong');
+              }
             });
           } catch (e) {
             strapi.notification.error(`${e}`);

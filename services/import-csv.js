@@ -60,26 +60,20 @@ module.exports = {
     new Promise(async (resolve, reject) => {
       const {options, fieldMapping, contentType, importState} = ctx.request.body
       const {dataType, body} = await resolveDataFromRequest(ctx);
-      const updateOn = Object.keys(fieldMapping).find(key => fieldMapping[key][ID_KEY])
+
       async function addRelations(items) {
+        const updateOn = Object.keys(fieldMapping).find(key => fieldMapping[key][ID_KEY])
         const itemsMap = await getItemsMap(items, fieldMapping)
         for (const item in itemsMap) {
-          try {
-            await strapi.services[contentType].update({[updateOn]: item}, itemsMap[item]);
-          } catch (error) {
-            console.error(item)
-          }
+          await strapi.services[contentType].update({[updateOn]: item}, itemsMap[item]);
         }
       }
 
       async function createEntities(items) {
-        const entities = items.map(item => importFields(item, fieldMapping))
-        for (const entity of entities) {
-          try {
-            await strapi.services[contentType].create(entity);
-          } catch (error) {
-            console.error(entity)
-          }
+        for (const item of items) {
+          const entity = await importFields(item, fieldMapping);
+          await strapi.services[contentType].create(entity);
+
         }
       }
 
@@ -92,16 +86,19 @@ module.exports = {
 
         if (importState === IMPORT_ACTION.relations) {
           await addRelations(items);
-        }else{
+        } else {
           await createEntities(items)
         }
         resolve({
-          status: "Import Completed Successfully",
+          status: 200,
+          payload: {}
         })
 
       } catch (error) {
-        reject(error);
+        reject({
+          status: 500,
+          payload: error
+        });
       }
-;
     }),
 };
