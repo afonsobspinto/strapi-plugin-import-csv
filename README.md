@@ -38,4 +38,4 @@ UI/UX & error handling could use some work.
 
 - > Why import as media is not showing up?
 
-Is your [url link supported](https://github.com/afonsobspinto/strapi-plugin-import-csv/blob/3fcc107c21ec1e055ddf1d1aa1e7b7e5181b6023/services/utils/utils.js#L39)?
+Is your url link [supported](https://github.com/afonsobspinto/strapi-plugin-import-csv/blob/3fcc107c21ec1e055ddf1d1aa1e7b7e5181b6023/services/utils/utils.js#L39)?
