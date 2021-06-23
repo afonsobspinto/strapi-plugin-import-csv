@@ -42,8 +42,8 @@ const importRelations = async (sourceItem, fieldMapping, cache) => {
 const importFields = (sourceItem, fieldMapping) => {
   const importedItem = {};
   for (const sourceField of Object.keys(fieldMapping)) {
-    const { destination } = fieldMapping[sourceField];
-    if (!destination || destination === "none") {
+    const { destination, importMediaToField } = fieldMapping[sourceField];
+    if (!destination || destination === "none" || importMediaToField) {
       continue;
     }
     importedItem[destination] = sourceItem[sourceField];

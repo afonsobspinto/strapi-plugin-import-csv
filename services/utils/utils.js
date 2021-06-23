@@ -60,6 +60,9 @@ const urlIsMedia = url => {
       case "mp4":
       case "avi":
         return true;
+      case "obj":
+      case "drc":
+        return true
       default:
         return false;
     }

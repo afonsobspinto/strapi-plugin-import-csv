@@ -9,7 +9,7 @@ const fetchFiles = url =>
       if (err) {
         reject(err);
       }
-      const mimeType = res.headers["content-type"].split(";").shift();
+      const mimeType = Object.keys(res.headers).includes("content-type") ? res.headers["content-type"].split(";").shift() : "application/octet-stream"
       const parsed = new URL(url);
       const extension = parsed.pathname
         .split(".")
@@ -19,17 +19,8 @@ const fetchFiles = url =>
     });
   });
 const storeFiles = async file => {
-  const uploadProviderConfig = await strapi
-    .store({
-      environment: strapi.config.environment,
-      type: "plugin",
-      name: "upload"
-    })
-    .get({key: "provider"});
-  return await strapi.plugins["upload"].services['upload'].upload(
-    [file],
-    uploadProviderConfig
-  );
+
+  return await strapi.plugins.upload.services.upload.uploadFileAndPersist(file);
 };
 const relateFileToContent =  ({
                                      contentType,
@@ -52,8 +43,7 @@ const relateFileToContent =  ({
   }
   return fileBuffer;
 };
-const importMediaFiles = async (savedContent, sourceItem, importConfig) => {
-  const {fieldMapping, contentType} = importConfig;
+const importMediaFiles = async (savedContent, sourceItem, fieldMapping, contentType) => {
   const uploadedFileDescriptors = _.mapValues(
     fieldMapping,
     async (mapping, sourceField) => {
