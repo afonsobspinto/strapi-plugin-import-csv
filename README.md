@@ -1,5 +1,6 @@
 # strapi-plugin-import-csv
 strapi plugin to import csv (that works with relations and file upload)
+
 Based on [how-to-create-an-import-content-plugin](https://strapi.io/blog/how-to-create-an-import-content-plugin-part-1-4)
 
 
