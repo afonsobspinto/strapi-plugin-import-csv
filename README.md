@@ -32,6 +32,7 @@ Based on [how-to-create-an-import-content-plugin](https://strapi.io/blog/how-to-
 # Gotchas
 
 The plugin was created to be used once and it was used, once, in a very custom context so take it with a bit of [salt](https://i.pinimg.com/originals/78/2d/55/782d558589b329b2ff501e7c91398628.jpg).
+
 UI/UX & error handling could use some work.
 
 # FAQ
