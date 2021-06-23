@@ -9,7 +9,6 @@
 const {resolveDataFromRequest, getItemsFromData, IMPORT_ACTION} = require("./utils/utils");
 const analyzer = require("./utils/analyzer");
 const _ = require("lodash");
-const importMediaFiles = require("./utils/importMediaFiles");
 const {ID_KEY} = require("./utils/utils");
 const {importRelations, importFields} = require("./utils/importDataAux");
 
@@ -72,14 +71,9 @@ module.exports = {
 
       async function createEntities(items) {
         for (const item of items) {
-          const entity = importFields(item, fieldMapping)
-          const savedContent = await strapi.services[contentType].create(entity);
-          await importMediaFiles(
-            savedContent,
-            item,
-            fieldMapping,
-            contentType
-          );
+          const entity = await importFields(item, fieldMapping);
+          await strapi.services[contentType].create(entity);
+
         }
       }
 
