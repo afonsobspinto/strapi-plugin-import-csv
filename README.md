@@ -1,3 +1,6 @@
+[![Maintenance](https://img.shields.io/badge/Maintained%3F-no-red.svg)](https://bitbucket.org/lbesson/ansi-colors)
+
+
 # strapi-plugin-import-csv
 strapi plugin to import csv (that works with relations and file upload)
 
