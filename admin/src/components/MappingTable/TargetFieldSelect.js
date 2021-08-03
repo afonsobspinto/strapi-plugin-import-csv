@@ -13,11 +13,14 @@ class TargetFieldSelect extends Component {
   }
 
   componentDidMount() {
-    this.setDefaultOption(this.getDefaultSelectionBasedOnName())
+    const {defaultLabel} = this.props
+    const defaultSelection = defaultLabel ? defaultLabel : this.getDefaultSelectionBasedOnName().value
+    this.setDefaultOption(defaultSelection)
   }
   componentDidUpdate(prevProps, prevState, snapshot) {
     if(prevProps.isRelations !== this.props.isRelations){
-      this.setDefaultOption(this.getDefaultSelectionBasedOnName())
+      const defaultSelection = this.props.defaultLabel ? this.props.defaultLabel : this.getDefaultSelectionBasedOnName().value
+      this.setDefaultOption(defaultSelection)
     }
   }
 
@@ -40,8 +43,8 @@ class TargetFieldSelect extends Component {
 
   setDefaultOption(target) {
     if (target) {
-      this.onChange(target.value)
-      this.setState({selectedTarget: target.value});
+      this.onChange(target)
+      this.setState({selectedTarget: target});
     }
   }
 
@@ -73,13 +76,5 @@ class TargetFieldSelect extends Component {
     );
   }
 }
-
-TargetFieldSelect.defaultProps = {
-  defaultLabel: 'None'
-};
-
-TargetFieldSelect.propTypes = {
-  defaultLabel: PropTypes.string
-};
 
 export default TargetFieldSelect;

@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import MappingOptions from "./MappingOptions";
 import TargetFieldSelect from "./TargetFieldSelect";
 import CollectionFieldSelect from "./CollectionFieldSelect";
-import {IMPORT_STATE, MATCH_ON_KEY} from "../../utils/constants"
+import {IMPORT_STATE, MATCH_ON_KEY, REL_COL_ID} from "../../utils/constants"
 import _, {get, has} from "lodash";
 import {Table} from "@buffetjs/core";
 import {
@@ -100,6 +100,7 @@ class MappingTable extends Component {
               fieldName={fieldName}
               isRelations={true}
               onChange={targetCollection => this.setMapping(fieldName, targetCollection, headersMapping.COLLECTION_COL)}
+              defaultLabel={REL_COL_ID}
             />
           </td>
         )}
