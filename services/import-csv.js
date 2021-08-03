@@ -72,8 +72,11 @@ module.exports = {
       async function createEntities(items) {
         for (const item of items) {
           const entity = await importFields(item, fieldMapping);
-          await strapi.services[contentType].create(entity);
-
+          try{
+            await strapi.services[contentType].create(entity);
+          }catch (exception){
+            console.error(exception)
+          }
         }
       }
 
