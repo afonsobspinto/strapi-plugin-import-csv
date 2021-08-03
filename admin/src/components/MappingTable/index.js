@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import MappingOptions from "./MappingOptions";
 import TargetFieldSelect from "./TargetFieldSelect";
 import CollectionFieldSelect from "./CollectionFieldSelect";
-import {ID_MAPPING, IMPORT_STATE, MATCH_ON_KEY} from "../../utils/constants"
+import {IMPORT_STATE, MATCH_ON_KEY} from "../../utils/constants"
 import _, {get, has} from "lodash";
 import {Table} from "@buffetjs/core";
 import {
@@ -76,6 +76,7 @@ class MappingTable extends Component {
           {this.props.targetModel && (
             <TargetFieldSelect
               targetModel={this.props.targetModel}
+              fieldName={fieldName}
               onChange={targetField => this.setMapping(fieldName, targetField, headersMapping.DESTINATION)}
             />
           )}
@@ -92,8 +93,8 @@ class MappingTable extends Component {
           <td>
             <TargetFieldSelect
               targetModel={this.getRelatedModel(fieldName)}
+              fieldName={fieldName}
               onChange={targetCollection => this.setMapping(fieldName, targetCollection, headersMapping.COLLECTION_COL)}
-              defaultLabel={ID_MAPPING}
             />
           </td>
         )}
