@@ -2,8 +2,8 @@ import React, {Component} from "react";
 import {Select} from "@buffetjs/core";
 import {get} from "lodash";
 import PropTypes from "prop-types";
+import {NONE} from "../../utils/constants";
 
-const NONE = {label: "None", value: "none"}
 
 class TargetFieldSelect extends Component {
 
@@ -13,15 +13,15 @@ class TargetFieldSelect extends Component {
   }
 
   componentDidMount() {
-    this.setDefaultOption(this.matchOptionName())
+    this.setDefaultOption(this.getDefaultSelectionBasedOnName())
   }
   componentDidUpdate(prevProps, prevState, snapshot) {
     if(prevProps.isRelations !== this.props.isRelations){
-      this.setDefaultOption(this.matchOptionName())
+      this.setDefaultOption(this.getDefaultSelectionBasedOnName())
     }
   }
 
-  matchOptionName() {
+  getDefaultSelectionBasedOnName() {
     const {fieldName, isRelations, targetModel} = this.props
     const schemaAttributes = get(targetModel, ["schema", "attributes"], {});
     const options = this.fillOptions(schemaAttributes);
@@ -41,8 +41,8 @@ class TargetFieldSelect extends Component {
   setDefaultOption(target) {
     if (target) {
       this.onChange(target.value)
+      this.setState({selectedTarget: target.value});
     }
-    this.setState({selectedTarget: target.value});
   }
 
   onChange(selectedTarget) {

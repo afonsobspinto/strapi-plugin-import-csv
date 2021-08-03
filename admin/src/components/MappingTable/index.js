@@ -86,6 +86,9 @@ class MappingTable extends Component {
           <td>
             <CollectionFieldSelect
               models={this.props.models}
+              model={this.props.targetModel}
+              fieldName={fieldName}
+              mapping={this.state.mapping}
               onChange={targetCollection => this.setMapping(fieldName, targetCollection, headersMapping.COLLECTION)}
             />
           </td>
