@@ -15,19 +15,34 @@ class TargetFieldSelect extends Component {
   componentDidMount() {
     this.setDefaultOption(this.matchOptionName())
   }
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    if(prevProps.isRelations !== this.props.isRelations){
+      this.setDefaultOption(this.matchOptionName())
+    }
+  }
 
   matchOptionName() {
-    const {fieldName} = this.props
-    const options = this.fillOptions();
-    let target = options.find(opt => opt.label === fieldName)
+    const {fieldName, isRelations, targetModel} = this.props
+    const schemaAttributes = get(targetModel, ["schema", "attributes"], {});
+    const options = this.fillOptions(schemaAttributes);
+    const filteredOptions = options.filter((opt) => {
+      if(opt == NONE){
+        return false
+      }
+      if(isRelations){
+        return schemaAttributes[opt.label].nature !== undefined
+      }
+      return schemaAttributes[opt.label].nature === undefined
+    })
+    let target = filteredOptions.find(opt => opt.label === fieldName)
     return target ? target : options[0]
   }
 
-  setDefaultOption(target){
+  setDefaultOption(target) {
     if (target) {
       this.onChange(target.value)
     }
-    this.setState({selectedTarget: target.value });
+    this.setState({selectedTarget: target.value});
   }
 
   onChange(selectedTarget) {
@@ -35,9 +50,7 @@ class TargetFieldSelect extends Component {
     this.setState({selectedTarget});
   }
 
-  fillOptions() {
-    const {targetModel} = this.props;
-    const schemaAttributes = get(targetModel, ["schema", "attributes"], {});
+  fillOptions(schemaAttributes) {
     const options = Object.keys(schemaAttributes)
       .map(fieldName => {
         return {label: fieldName, value: fieldName};
@@ -47,13 +60,14 @@ class TargetFieldSelect extends Component {
   }
 
   render() {
-
     const {selectedTarget} = this.state
+    const {targetModel} = this.props
+    const schemaAttributes = get(targetModel, ["schema", "attributes"], {});
     return (
       <Select
         name={"targetField"}
         value={selectedTarget}
-        options={this.fillOptions()}
+        options={this.fillOptions(schemaAttributes)}
         onChange={({target: {value}}) => this.onChange(value)}
       />
     );

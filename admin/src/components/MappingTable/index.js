@@ -77,6 +77,7 @@ class MappingTable extends Component {
             <TargetFieldSelect
               targetModel={this.props.targetModel}
               fieldName={fieldName}
+              isRelations={showExtraCols}
               onChange={targetField => this.setMapping(fieldName, targetField, headersMapping.DESTINATION)}
             />
           )}
@@ -94,6 +95,7 @@ class MappingTable extends Component {
             <TargetFieldSelect
               targetModel={this.getRelatedModel(fieldName)}
               fieldName={fieldName}
+              isRelations={true}
               onChange={targetCollection => this.setMapping(fieldName, targetCollection, headersMapping.COLLECTION_COL)}
             />
           </td>
