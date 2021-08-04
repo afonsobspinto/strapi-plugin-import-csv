@@ -1,10 +1,14 @@
-import React from "react";
-import TargetFieldSelect from "./TargetFieldSelect";
+import React, { useEffect } from 'react';
 import {Label} from "@buffetjs/core";
 import {IMPORT_STATE, MATCH_ON_KEY, REL_COL_ID} from "../../utils/constants";
 
 const MappingOptions = ({stat, onChange, targetModel, importState}) => {
   const matchOnChecked = stat.fieldName === REL_COL_ID ? 'checked' : null
+  useEffect(() => {
+    if(matchOnChecked){
+      onChange({[MATCH_ON_KEY]: true})
+    }
+  }, [stat]);
   return importState === IMPORT_STATE.content ? (
       <div>
         {stat.format === "xml" && (

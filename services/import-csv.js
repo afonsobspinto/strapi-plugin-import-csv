@@ -65,7 +65,11 @@ module.exports = {
         const updateOn = Object.keys(fieldMapping).find(key => fieldMapping[key][ID_KEY])
         const itemsMap = await getItemsMap(items, fieldMapping)
         for (const item in itemsMap) {
-          await strapi.services[contentType].update({[updateOn]: item}, itemsMap[item]);
+          try{
+            await strapi.services[contentType].update({[updateOn]: item}, itemsMap[item]);
+          }catch (exception){
+            console.error(exception)
+          }
         }
       }
 
