@@ -45,7 +45,7 @@ const importRelations = async (sourceItem, fieldMapping, cache) => {
     let relatedStrapi
     if (entryValue.includes(',')) {
       relatedStrapi = []
-      const related = entryValue.split(',')
+      const related = JSON.parse(entryValue)
       for (const r of related) {
         if (!(r in cache)) {
           cache[r] = await strapi.query(collection).findOne({[collectionCol]: r})
