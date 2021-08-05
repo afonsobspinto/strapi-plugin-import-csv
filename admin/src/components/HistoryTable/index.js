@@ -1,8 +1,8 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { Table, Button } from "@buffetjs/core";
-import moment from "moment";
-import { LoadingIndicator, PopUpWarning } from "strapi-helper-plugin";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { Table, Button } from '@buffetjs/core';
+import moment from 'moment';
+import { LoadingIndicator, PopUpWarning } from 'strapi-helper-plugin';
 
 class HistoryTable extends Component {
   state = {
@@ -25,24 +25,24 @@ class HistoryTable extends Component {
     const updatedAt = moment(updated_at);
     let source;
     switch (row.source) {
-      case "upload":
+      case 'upload':
         source = row.options.filename;
         break;
-      case "url":
+      case 'url':
         source = row.options.url;
         break;
       default:
-        source = "unknown";
+        source = 'unknown';
     }
     return (
       <tr style={{ paddingTop: 18 }}>
         <td>{source}</td>
         <td>{contentType}</td>
-        <td>{updatedAt.format("LLL")}</td>
+        <td>{updatedAt.format('LLL')}</td>
         <td>{importedCount}</td>
         <td>{ongoing ? <LoadingIndicator /> : <span>Ready</span>} </td>
         <td>
-          <div className={"row"}>
+          <div className={'row'}>
             <div
               style={{
                 marginRight: 18,
@@ -50,10 +50,10 @@ class HistoryTable extends Component {
               }}
               onClick={() => this.undoImport(id)}
             >
-              <i className={"fa fa-undo"} role={"button"} />
+              <i className={'fa fa-undo'} role={'button'} />
             </div>
             <div onClick={() => this.deleteImport(id)}>
-              <i className={"fa fa-trash"} role={"button"} />
+              <i className={'fa fa-trash'} role={'button'} />
             </div>
           </div>
         </td>
@@ -64,16 +64,16 @@ class HistoryTable extends Component {
   render() {
     const { configs } = this.props;
     const props = {
-      title: "Import History",
-      subtitle: "Manage the Initiated Imports"
+      title: 'Import History',
+      subtitle: 'Manage the Initiated Imports'
     };
     const headers = [
-      { name: "Source", value: "source" },
-      { name: "Content Type", value: "contentType" },
-      { name: "Updated At", value: "updatedAt" },
-      { name: "Items", value: "items" },
-      { name: "Progress State", value: "progress" },
-      { name: "Actions", value: "actions" }
+      { name: 'Source', value: 'source' },
+      { name: 'Content Type', value: 'contentType' },
+      { name: 'Updated At', value: 'updatedAt' },
+      { name: 'Items', value: 'items' },
+      { name: 'Progress State', value: 'progress' },
+      { name: 'Actions', value: 'actions' }
     ];
     const items = [...configs];
     const {
@@ -83,13 +83,13 @@ class HistoryTable extends Component {
       showUndoModal
     } = this.state;
     return (
-      <div className={"col-md-12"} style={{ paddingTop: 12 }}>
+      <div className={'col-md-12'} style={{ paddingTop: 12 }}>
         <PopUpWarning
           isOpen={showDeleteModal}
           toggleModal={() => this.setState({ showDeleteModal: null })}
           content={{
-            title: `Please confirm`,
-            message: `Are you sure you want to delete this entry?`
+            title: 'Please confirm',
+            message: 'Are you sure you want to delete this entry?'
           }}
           popUpWarningType="danger"
           onConfirm={async () => {
@@ -100,8 +100,8 @@ class HistoryTable extends Component {
           isOpen={showUndoModal}
           toggleModal={() => this.setState({ showUndoModal: null })}
           content={{
-            title: `Please confirm`,
-            message: `Are you sure you want to undo this entry?`
+            title: 'Please confirm',
+            message: 'Are you sure you want to undo this entry?'
           }}
           popUpWarningType="danger"
           onConfirm={async () => {

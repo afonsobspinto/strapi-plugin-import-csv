@@ -1,15 +1,15 @@
-import React, { Component } from "react";
-import { Select } from "@buffetjs/core";
-import {NONE} from "../../utils/constants";
+import React, { Component } from 'react';
+import { Select } from '@buffetjs/core';
+import {NONE} from '../../utils/constants';
 
 class CollectionFieldSelect extends Component {
 
   state = {
-    selectedTarget: ""
+    selectedTarget: ''
   };
 
   componentDidMount() {
-    this.setDefaultOption(this.getDefaultSelectionBasedOnName())
+    this.setDefaultOption(this.getDefaultSelectionBasedOnName());
   }
 
   onChange(selectedTarget) {
@@ -18,28 +18,28 @@ class CollectionFieldSelect extends Component {
   }
 
   getDefaultSelectionBasedOnName() {
-    const {fieldName, model, mapping} = this.props
+    const {fieldName, model, mapping} = this.props;
     if(mapping[fieldName].destination !== 'none'){
-      let target = model.schema.attributes[fieldName]
-      return target ? target.target: null
+      let target = model.schema.attributes[fieldName];
+      return target ? target.target: null;
     }
-    return null
+    return null;
   }
 
   fillOptions() {
     const { models } = this.props;
     const options = models
       .map(element => {
-        const collectionName = element.apiID
+        const collectionName = element.apiID;
         return { label: collectionName, value: collectionName };
-      })
+      });
     return [NONE, ...options];
   }
 
   setDefaultOption(target) {
     if (target) {
-      const targetId = target.split('.')[1]
-      this.onChange(targetId)
+      const targetId = target.split('.')[1];
+      this.onChange(targetId);
       this.setState({selectedTarget: targetId});
     }
   }
@@ -48,7 +48,7 @@ class CollectionFieldSelect extends Component {
 
     return (
       <Select
-        name={"targetCollectionField"}
+        name={'targetCollectionField'}
         value={this.state.selectedTarget}
         options={this.fillOptions()}
         onChange={({ target: { value } }) => this.onChange(value)}

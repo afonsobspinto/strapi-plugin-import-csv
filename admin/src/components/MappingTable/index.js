@@ -1,11 +1,11 @@
-import React, {Component} from "react";
-import PropTypes from "prop-types";
-import MappingOptions from "./MappingOptions";
-import TargetFieldSelect from "./TargetFieldSelect";
-import CollectionFieldSelect from "./CollectionFieldSelect";
-import {IMPORT_STATE, MATCH_ON_KEY, REL_COL_ID} from "../../utils/constants"
-import _, {get, has} from "lodash";
-import {Table} from "@buffetjs/core";
+import React, {Component} from 'react';
+import PropTypes from 'prop-types';
+import MappingOptions from './MappingOptions';
+import TargetFieldSelect from './TargetFieldSelect';
+import CollectionFieldSelect from './CollectionFieldSelect';
+import {IMPORT_STATE, MATCH_ON_KEY, REL_COL_ID} from '../../utils/constants';
+import _, {get, has} from 'lodash';
+import {Table} from '@buffetjs/core';
 import {
   Bool as BoolIcon,
   Json as JsonIcon,
@@ -14,13 +14,13 @@ import {
   Email as EmailIcon,
   Calendar as DateIcon,
   RichText as XmlIcon
-} from "@buffetjs/icons";
+} from '@buffetjs/icons';
 
 const headersMapping = {
-  DESTINATION: "destination",
-  COLLECTION: "collection",
-  COLLECTION_COL: "collectionCol",
-}
+  DESTINATION: 'destination',
+  COLLECTION: 'collection',
+  COLLECTION_COL: 'collectionCol',
+};
 
 class MappingTable extends Component {
 
@@ -28,9 +28,9 @@ class MappingTable extends Component {
   state = {mapping: {}};
 
   getRelatedModel = (fieldName) => {
-    const {mapping} = this.state
-    const {models} = this.props
-    const modelName = get(mapping, [fieldName, headersMapping.COLLECTION], null)
+    const {mapping} = this.state;
+    const {models} = this.props;
+    const modelName = get(mapping, [fieldName, headersMapping.COLLECTION], null);
     if (!modelName || !models) return {};
     return models.find(model => model.apiID === modelName);
   };
@@ -38,7 +38,7 @@ class MappingTable extends Component {
   CustomRow = ({row}) => {
 
     const {fieldName, count, format, minLength, maxLength, meanLength} = row;
-    const showExtraCols = this.props.importState === IMPORT_STATE.relations
+    const showExtraCols = this.props.importState === IMPORT_STATE.relations;
     return (
       <tr style={{paddingTop: 18}}>
         <td>{fieldName}</td>
@@ -46,13 +46,13 @@ class MappingTable extends Component {
           <p>{count}</p>
         </td>
         <td>
-          {format === "string" && <TextIcon fill="#fdd835"/>}
-          {format === "number" && <NumberIcon fill="#fdd835"/>}
-          {format === "boolean" && <BoolIcon fill="#fdd835"/>}
-          {format === "object" && <JsonIcon fill="#fdd835"/>}
-          {format === "email" && <EmailIcon fill="#fdd835"/>}
-          {format === "date" && <DateIcon fill="#fdd835"/>}
-          {format === "xml" && <XmlIcon fill="#fdd835"/>}
+          {format === 'string' && <TextIcon fill="#fdd835"/>}
+          {format === 'number' && <NumberIcon fill="#fdd835"/>}
+          {format === 'boolean' && <BoolIcon fill="#fdd835"/>}
+          {format === 'object' && <JsonIcon fill="#fdd835"/>}
+          {format === 'email' && <EmailIcon fill="#fdd835"/>}
+          {format === 'date' && <DateIcon fill="#fdd835"/>}
+          {format === 'xml' && <XmlIcon fill="#fdd835"/>}
           <p>{format}</p>
         </td>
         <td>
@@ -112,7 +112,7 @@ class MappingTable extends Component {
     if (options[MATCH_ON_KEY]) {
       for (let key in newState['mapping']) {
         if (newState['mapping'][key][MATCH_ON_KEY]) {
-          delete newState['mapping'][key][MATCH_ON_KEY]
+          delete newState['mapping'][key][MATCH_ON_KEY];
         }
       }
     }
@@ -135,36 +135,36 @@ class MappingTable extends Component {
     const {importState} = this.props;
 
     return importState === IMPORT_STATE.content ? [
-      {name: "Field", value: "fieldName"},
-      {name: "Count", value: "count"},
-      {name: "Format", value: "format"},
-      {name: "Min Length", value: "minLength"},
-      {name: "Max Length", value: "maxLength"},
-      {name: "Mean Length", value: "meanLength"},
-      {name: "Options", value: "options"},
-      {name: "Destination", value: "destination"}
+      {name: 'Field', value: 'fieldName'},
+      {name: 'Count', value: 'count'},
+      {name: 'Format', value: 'format'},
+      {name: 'Min Length', value: 'minLength'},
+      {name: 'Max Length', value: 'maxLength'},
+      {name: 'Mean Length', value: 'meanLength'},
+      {name: 'Options', value: 'options'},
+      {name: 'Destination', value: 'destination'}
     ] : [
-      {name: "Field", value: "fieldName"},
-      {name: "Count", value: "count"},
-      {name: "Format", value: "format"},
-      {name: "Min Length", value: "minLength"},
-      {name: "Max Length", value: "maxLength"},
-      {name: "Mean Length", value: "meanLength"},
-      {name: "Options", value: "options"},
-      {name: "Destination Column", value: headersMapping.DESTINATION},
-      {name: "Related Collection", value: headersMapping.COLLECTION},
-      {name: "Related Column", value: headersMapping.COLLECTION_COL}
+      {name: 'Field', value: 'fieldName'},
+      {name: 'Count', value: 'count'},
+      {name: 'Format', value: 'format'},
+      {name: 'Min Length', value: 'minLength'},
+      {name: 'Max Length', value: 'maxLength'},
+      {name: 'Mean Length', value: 'meanLength'},
+      {name: 'Options', value: 'options'},
+      {name: 'Destination Column', value: headersMapping.DESTINATION},
+      {name: 'Related Collection', value: headersMapping.COLLECTION},
+      {name: 'Related Column', value: headersMapping.COLLECTION_COL}
     ];
   }
 
   render() {
     const {analysis} = this.props;
     const props = {
-      title: "Field Mapping",
+      title: 'Field Mapping',
       subtitle:
-        "Configure the Relationship between CSV Fields and Content type Fields"
+        'Configure the Relationship between CSV Fields and Content type Fields'
     };
-    const headers = this.getHeaders()
+    const headers = this.getHeaders();
     const items = [...analysis.fieldStats];
     return (
       <Table
