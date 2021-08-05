@@ -45,7 +45,7 @@ const importRelations = async (sourceItem, fieldMapping, cache) => {
     let relatedStrapi;
     if (entryValue.includes(',')) {
       relatedStrapi = [];
-      const related = JSON.parse(entryValue);
+      const related = entryValue.includes('[') ? JSON.parse(entryValue) : entryValue.split(',').map(s => s.trim());
       for (const r of related) {
         if (!(r in cache)) {
           cache[r] = await strapi.query(collection).findOne({[collectionCol]: r});
@@ -76,7 +76,7 @@ const importFields = async (sourceItem, fieldMapping) => {
       const storedFiles = await Promise.all(fileBuffers.map(storeFiles));
       importedItem[destination] = storedFiles.map(file => file.id);
     } else {
-      importedItem[destination] = sourceItem[sourceField];
+      importedItem[destination] = sourceItem[sourceField] || null;
     }
   }
   return importedItem;
