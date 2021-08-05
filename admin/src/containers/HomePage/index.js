@@ -1,20 +1,20 @@
-import React, {memo, Component} from "react";
-import {request} from "strapi-helper-plugin";
-import PropTypes from "prop-types";
-import pluginId from "../../pluginId";
-import UploadFileForm from "../../components/UploadFileForm";
+import React, {memo, Component} from 'react';
+import {request} from 'strapi-helper-plugin';
+import PropTypes from 'prop-types';
+import pluginId from '../../pluginId';
+import UploadFileForm from '../../components/UploadFileForm';
 import {
   HeaderNav,
   LoadingIndicator,
   PluginHeader
-} from "strapi-helper-plugin";
-import Row from "../../components/Row";
-import Block from "../../components/Block";
-import {Select, Label} from "@buffetjs/core";
-import {get, has} from "lodash";
-import MappingTable from "../../components/MappingTable";
-import {Button} from "@buffetjs/core";
-import {IMPORT_STATE, MATCH_ON_KEY} from "../../utils/constants"
+} from 'strapi-helper-plugin';
+import Row from '../../components/Row';
+import Block from '../../components/Block';
+import {Select, Label} from '@buffetjs/core';
+import {get, has} from 'lodash';
+import MappingTable from '../../components/MappingTable';
+import {Button} from '@buffetjs/core';
+import {IMPORT_STATE, MATCH_ON_KEY} from '../../utils/constants';
 import Tab from '@material-ui/core/Tab';
 import Tabs from '@material-ui/core/Tabs';
 
@@ -24,10 +24,10 @@ class HomePage extends Component {
     loading: true,
     modelOptions: [],
     models: [],
-    importSource: "upload",
+    importSource: 'upload',
     analyzing: false,
     analysis: null,
-    selectedContentType: "",
+    selectedContentType: '',
     fieldMapping: {},
     importState: IMPORT_STATE.content
   };
@@ -39,7 +39,7 @@ class HomePage extends Component {
       this.setState({
         models,
         modelOptions,
-        selectedContentType: modelOptions ? modelOptions[0].value : ""
+        selectedContentType: modelOptions ? modelOptions[0].value : ''
       });
     });
   }
@@ -49,17 +49,17 @@ class HomePage extends Component {
     this.setState({analyzing: true}, async () => {
       try {
         strapi.notification.info('Analyze Started');
-        const response = await request("/import-csv/preAnalyzeImportFile", {
-          method: "POST",
+        const response = await request('/import-csv/preAnalyzeImportFile', {
+          method: 'POST',
           body: analysisConfig
         });
 
         this.setState({analysis: response, analyzing: false}, () => {
-          strapi.notification.success(`Analyzed Successfully`);
+          strapi.notification.success('Analyzed Successfully');
         });
       } catch (e) {
         this.setState({analyzing: false}, () => {
-          strapi.notification.error(`Analyze Failed, try again`);
+          strapi.notification.error('Analyze Failed, try again');
           strapi.notification.error(`${e}`);
         });
       }
@@ -69,17 +69,17 @@ class HomePage extends Component {
   getModels = async () => {
     this.setState({loading: true});
     try {
-      const response = await request("/content-type-builder/content-types", {
-        method: "GET"
+      const response = await request('/content-type-builder/content-types', {
+        method: 'GET'
       });
 
       // Remove non-user content types from models
-      const models = get(response, ["data"], []).filter(
-        obj => !has(obj, "plugin")
+      const models = get(response, ['data'], []).filter(
+        obj => !has(obj, 'plugin')
       );
       const modelOptions = models.map(model => {
         return {
-          label: get(model, ["schema", "name"], ""), // (name is used for display_name)
+          label: get(model, ['schema', 'name'], ''), // (name is used for display_name)
           value: model.apiID // (uid is used for table creations)
         };
       });
@@ -96,13 +96,13 @@ class HomePage extends Component {
   };
 
   checksRelationRequirements = (fieldMapping) => {
-    const containsMatchingID = Object.keys(fieldMapping).find(key => fieldMapping[key][MATCH_ON_KEY])
-    if (!containsMatchingID) {
-      strapi.notification.error(`Match on ID is required`);
+    const containsMatchingID = Object.keys(fieldMapping).find(key => fieldMapping[key][MATCH_ON_KEY]);
+    if (!containsMatchingID || fieldMapping[containsMatchingID]['destination'] == 'none') {
+      strapi.notification.error('Match on ID is required');
       this.setState({loading: false});
-      return false
+      return false;
     }
-    return true
+    return true;
   }
 
   onSaveImport = async () => {
@@ -117,22 +117,22 @@ class HomePage extends Component {
 
     if (importState === IMPORT_STATE.relations && this.checksRelationRequirements(fieldMapping) || importState === IMPORT_STATE.content) {
       this.setState({loading: true}, async () => {
-          try {
-            strapi.notification.info('Import Started');
-            const res = await request("/import-csv", {method: "POST", body: importConfig});
-            this.setState({loading: false}, () => {
-              if(res.status === 200){
-                strapi.notification.success('Imported Successfully');
-              }else{
-                strapi.notification.error('Oops! Something went wrong');
-              }
-            });
-          } catch (e) {
-            strapi.notification.error(`${e}`);
-            this.setState({loading: false});
-          }
+        try {
+          strapi.notification.info('Import Started');
+          const res = await request('/import-csv', {method: 'POST', body: importConfig});
+          this.setState({loading: false}, () => {
+            if(res.status === 200){
+              strapi.notification.success('Imported Successfully');
+            }else{
+              strapi.notification.error('Oops! Something went wrong');
+            }
+          });
+        } catch (e) {
+          strapi.notification.error(`${e}`);
+          this.setState({loading: false});
         }
-      )
+      }
+      );
     }
   };
 
@@ -151,19 +151,19 @@ class HomePage extends Component {
   };
 
   handleChange = (_, newValue) => {
-    this.setState({importState: newValue})
+    this.setState({importState: newValue});
   }
 
   render() {
-    const {loading, importState} = this.state
+    const {loading, importState} = this.state;
 
     return loading ? <LoadingIndicator/> :
-      <div className={"container-fluid"} style={{padding: "18px 30px"}}>
+      <div className={'container-fluid'} style={{padding: '18px 30px'}}>
         <PluginHeader
-          title={"Import CSV"}
-          description={"Import CSV"}
+          title={'Import CSV'}
+          description={'Import CSV'}
         />
-        <Tabs value={importState} onChange={this.handleChange} style={{marginTop: "4.4rem"}}>
+        <Tabs value={importState} onChange={this.handleChange} style={{marginTop: '4.4rem'}}>
           <Tab label="Import Content" importState={IMPORT_STATE.content}/>
           <Tab label="Import Relations" importState={IMPORT_STATE.relations}/>
         </Tabs>
@@ -173,8 +173,8 @@ class HomePage extends Component {
             description="Configure the Import Source & Destination"
             style={{marginBottom: 12}}
           >
-            <Row className={"row"}>
-              <div className={"col-4"}>
+            <Row className={'row'}>
+              <div className={'col-4'}>
                 <Label htmlFor="importDest">Import Destination</Label>
                 <Select
                   value={this.state.selectedContentType}
@@ -203,14 +203,14 @@ class HomePage extends Component {
             />
             <Button
               style={{marginTop: 12}}
-              label={"Run the Import"}
+              label={'Run the Import'}
               onClick={this.onSaveImport}
             />
           </Row>
         )}
-      </div>
+      </div>;
   }
-  ;
+
 }
 
 export default memo(HomePage);

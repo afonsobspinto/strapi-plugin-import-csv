@@ -1,8 +1,8 @@
-import MappingOptions from "./MappingOptions";
-import TargetFieldSelect from "./TargetFieldSelect";
-import CollectionFieldSelect from "./CollectionFieldSelect";
-import {ID_MAPPING} from "../../utils/constants";
-import React from "react";
+import MappingOptions from './MappingOptions';
+import TargetFieldSelect from './TargetFieldSelect';
+import CollectionFieldSelect from './CollectionFieldSelect';
+import {ID_MAPPING} from '../../utils/constants';
+import React from 'react';
 
 export const ContentCustomRow = ({ row }) => {
 
@@ -15,13 +15,13 @@ export const ContentCustomRow = ({ row }) => {
         <p>{count}</p>
       </td>
       <td>
-        {format === "string" && <TextIcon fill="#fdd835" />}
-        {format === "number" && <NumberIcon fill="#fdd835" />}
-        {format === "boolean" && <BoolIcon fill="#fdd835" />}
-        {format === "object" && <JsonIcon fill="#fdd835" />}
-        {format === "email" && <EmailIcon fill="#fdd835" />}
-        {format === "date" && <DateIcon fill="#fdd835" />}
-        {format === "xml" && <XmlIcon fill="#fdd835" />}
+        {format === 'string' && <TextIcon fill="#fdd835" />}
+        {format === 'number' && <NumberIcon fill="#fdd835" />}
+        {format === 'boolean' && <BoolIcon fill="#fdd835" />}
+        {format === 'object' && <JsonIcon fill="#fdd835" />}
+        {format === 'email' && <EmailIcon fill="#fdd835" />}
+        {format === 'date' && <DateIcon fill="#fdd835" />}
+        {format === 'xml' && <XmlIcon fill="#fdd835" />}
         <p>{format}</p>
       </td>
       <td>

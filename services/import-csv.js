@@ -6,43 +6,43 @@
  * @description: A set of functions similar to controller's actions to avoid code duplication.
  */
 
-const {resolveDataFromRequest, getItemsFromData, IMPORT_ACTION} = require("./utils/utils");
-const analyzer = require("./utils/analyzer");
-const _ = require("lodash");
-const {ID_KEY} = require("./utils/utils");
-const {importRelations, importFields} = require("./utils/importDataAux");
+const {resolveDataFromRequest, getItemsFromData, IMPORT_ACTION} = require('./utils/utils');
+const analyzer = require('./utils/analyzer');
+const _ = require('lodash');
+const {ID_KEY} = require('./utils/utils');
+const {importRelations, importFields} = require('./utils/importDataAux');
 
 const merge = (current, toAdd) => {
   if (current == null) {
-    return toAdd
+    return toAdd;
   }
   for (const key in current) {
     if (key in toAdd) {
       if (Array.isArray(current[key])) {
-        current[key].push(toAdd[key])
+        current[key].push(toAdd[key]);
       } else {
-        current[key] = [current[key], toAdd[key]]
+        current[key] = [current[key], toAdd[key]];
       }
     } else {
-      current[key] = toAdd[key]
+      current[key] = toAdd[key];
     }
   }
-  return current
-}
+  return current;
+};
 
 const getItemsMap = async (items, fieldMapping) => {
-  const cache = {}
-  const map = {}
+  const cache = {};
+  const map = {};
   for (const item of items) {
     const {uid, updatedItem} = await importRelations(
       item,
       fieldMapping,
       cache
     );
-    map[uid] = merge(uid in map ? map[uid] : null, updatedItem)
+    map[uid] = merge(uid in map ? map[uid] : null, updatedItem);
   }
-  return map
-}
+  return map;
+};
 
 
 module.exports = {
@@ -58,22 +58,29 @@ module.exports = {
   },
   importItems: (ctx) =>
     new Promise(async (resolve, reject) => {
-      const {options, fieldMapping, contentType, importState} = ctx.request.body
+      const {options, fieldMapping, contentType, importState} = ctx.request.body;
       const {dataType, body} = await resolveDataFromRequest(ctx);
 
       async function addRelations(items) {
-        const updateOn = Object.keys(fieldMapping).find(key => fieldMapping[key][ID_KEY])
-        const itemsMap = await getItemsMap(items, fieldMapping)
+        const updateOn = fieldMapping[Object.keys(fieldMapping).find(key => fieldMapping[key][ID_KEY])]['destination'];
+        const itemsMap = await getItemsMap(items, fieldMapping);
         for (const item in itemsMap) {
-          await strapi.services[contentType].update({[updateOn]: item}, itemsMap[item]);
+          try{
+            await strapi.services[contentType].update({[updateOn]: item}, itemsMap[item]);
+          }catch (exception){
+            console.error(exception);
+          }
         }
       }
 
       async function createEntities(items) {
         for (const item of items) {
           const entity = await importFields(item, fieldMapping);
-          await strapi.services[contentType].create(entity);
-
+          try{
+            await strapi.services[contentType].create(entity);
+          }catch (exception){
+            console.error(exception);
+          }
         }
       }
 
@@ -87,12 +94,12 @@ module.exports = {
         if (importState === IMPORT_ACTION.relations) {
           await addRelations(items);
         } else {
-          await createEntities(items)
+          await createEntities(items);
         }
         resolve({
           status: 200,
           payload: {}
-        })
+        });
 
       } catch (error) {
         reject({

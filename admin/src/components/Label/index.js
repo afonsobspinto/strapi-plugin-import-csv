@@ -1,4 +1,4 @@
-import styled, { css, keyframes } from "styled-components";
+import styled, { css, keyframes } from 'styled-components';
 
 const Label = styled.label`
   position: relative;
@@ -16,7 +16,7 @@ const Label = styled.label`
   .icon {
     width: 82px;
     path {
-      fill: ${({ showLoader }) => (showLoader ? "#729BEF" : "#ccd0da")};
+      fill: ${({ showLoader }) => (showLoader ? '#729BEF' : '#ccd0da')};
       transition: fill 0.3s ease;
     }
   }
@@ -42,8 +42,8 @@ const Label = styled.label`
 
 
   ${({ isDragging }) => {
-  if (isDragging) {
-    return css`
+    if (isDragging) {
+      return css`
         background-color: rgba(28, 93, 231, 0.01) !important;
         border: 2px dashed rgba(28, 93, 231, 0.1) !important;
       `;
@@ -51,13 +51,13 @@ const Label = styled.label`
   }}
 
   ${({ showLoader }) => {
-  if (showLoader) {
-    return css`
-        animation: ${smoothBlink("transparent", "rgba(28,93,231,0.05)")} 2s
+    if (showLoader) {
+      return css`
+        animation: ${smoothBlink('transparent', 'rgba(28,93,231,0.05)')} 2s
           linear infinite;
       `;
-  }
-}}
+    }
+  }}
 `;
 
 const smoothBlink = (firstColor, secondColor) => keyframes`

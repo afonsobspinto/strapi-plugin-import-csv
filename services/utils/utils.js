@@ -1,7 +1,7 @@
-"use strict";
-const request = require("request");
-const contentTypeParser = require("content-type-parser");
-const CsvParser = require("csv-parse/lib/sync");
+'use strict';
+const request = require('request');
+const contentTypeParser = require('content-type-parser');
+const CsvParser = require('csv-parse/lib/sync');
 const urlRegEx = /((([A-Za-z]{3,9}:(?:\/\/)?)(?:[\-;:&=\+\$,\w]+@)?[A-Za-z0-9\.\-]+|(?:www\.|[\- ;:&=\+\$,\w]+@)[A-Za-z0-9\.\-]+)((?:\/[\+~%\/\.\w\-]*)?\??(?:[\-\+=&;%@\.\w]*)#?(?:[\.\!\/\\\w]*))?)/g;
 const URL_REGEXP = new RegExp(urlRegEx);
 const validateUrl = url => {
@@ -17,7 +17,7 @@ const stringIsEmail = data => {
 const resolveDataFromRequest = async ctx => {
   const { source, type, options, data } = ctx.request.body;
   switch (source) {
-    case "upload":
+    case 'upload':
       return { dataType: type, body: data, options };
   }
 };
@@ -25,12 +25,12 @@ const resolveDataFromRequest = async ctx => {
 const getItemsFromData = ({ dataType, body, options }) =>
   new Promise(async (resolve, reject) => {
     const parsedContentType = contentTypeParser(dataType);
-    if (dataType === "text/csv" || dataType === "application/vnd.ms-excel") {
+    if (dataType === 'text/csv' || dataType === 'application/vnd.ms-excel') {
       const items = CsvParser(body, {
         ...options,
         columns: true
       });
-      return resolve({ sourceType: "csv", items });
+      return resolve({ sourceType: 'csv', items });
     }
     reject({
       contentType: parsedContentType.toString()
@@ -40,29 +40,29 @@ const urlIsMedia = url => {
   try {
     const parsed = new URL(url);
     const extension = parsed.pathname
-      .split(".")
+      .split('.')
       .pop()
       .toLowerCase();
     switch (extension) {
-      case "png":
-      case "gif":
-      case "jpg":
-      case "jpeg":
-      case "svg":
-      case "bmp":
-      case "tif":
-      case "tiff":
+      case 'png':
+      case 'gif':
+      case 'jpg':
+      case 'jpeg':
+      case 'svg':
+      case 'bmp':
+      case 'tif':
+      case 'tiff':
         return true;
-      case "mp3":
-      case "wav":
-      case "ogg":
+      case 'mp3':
+      case 'wav':
+      case 'ogg':
         return true;
-      case "mp4":
-      case "avi":
+      case 'mp4':
+      case 'avi':
         return true;
-      case "obj":
-      case "drc":
-        return true
+      case 'obj':
+      case 'drc':
+        return true;
       default:
         return false;
     }
@@ -71,8 +71,8 @@ const urlIsMedia = url => {
   }
 };
 
-const IMPORT_ACTION = Object.freeze({"content":0, "relations":1})
-const ID_KEY = "matchOnID"
+const IMPORT_ACTION = Object.freeze({'content':0, 'relations':1});
+const ID_KEY = 'matchOnID';
 
 module.exports = {
   resolveDataFromRequest,

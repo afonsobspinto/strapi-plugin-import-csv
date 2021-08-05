@@ -1,9 +1,9 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import P from "../P";
-import Row from "../Row";
-import Label from "../Label";
-import { Button } from "@buffetjs/core";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import P from '../P';
+import Row from '../Row';
+import Label from '../Label';
+import { Button } from '@buffetjs/core';
 
 class UploadFileForm extends Component {
   state = {
@@ -44,7 +44,7 @@ class UploadFileForm extends Component {
     const data = file && (await this.readFileContent(file));
     data &&
     this.props.onRequestAnalysis({
-      source: "upload",
+      source: 'upload',
       type: file.type,
       options,
       data
@@ -52,19 +52,19 @@ class UploadFileForm extends Component {
   };
   render() {
 
-    const {options} = this.state
+    const {options} = this.state;
     const placeholder = options.filename != null ? (
       <span>
         {options.filename}
       </span> ): (
       <span>
-        Drag & drop your file into this area or <span className={"underline"}>browse</span> for a file to upload
+        Drag & drop your file into this area or <span className={'underline'}>browse</span> for a file to upload
       </span>
-    )
+    );
 
     return (
-      <div className={"col-12"}>
-        <Row className={"row"}>
+      <div className={'col-12'}>
+        <Row className={'row'}>
           <Label
             showLoader={this.props.loadingAnalysis}
             isDragging={this.state.isDragging}
@@ -151,10 +151,10 @@ class UploadFileForm extends Component {
             />
           </Label>
         </Row>
-        <Row className={"row"}>
+        <Row className={'row'}>
           <Button
-            label={"Analyze"}
-            color={this.state.file ? "secondary" : "cancel"}
+            label={'Analyze'}
+            color={this.state.file ? 'secondary' : 'cancel'}
             disabled={!this.state.file}
             onClick={this.clickAnalyzeUploadFile}
           />

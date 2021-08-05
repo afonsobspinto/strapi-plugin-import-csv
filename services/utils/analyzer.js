@@ -1,7 +1,7 @@
-"use strict";
-const _ = require("lodash");
-var ss = require("simple-statistics");
-const {compileStatsForFieldData} = require("./fieldUtils");
+'use strict';
+const _ = require('lodash');
+var ss = require('simple-statistics');
+const {compileStatsForFieldData} = require('./fieldUtils');
 const getFieldNameSet = items => {
   const fieldNames = new Set();
   items.forEach(item => {
@@ -29,18 +29,18 @@ const analyze = (sourceType, items) => {
     const fieldStat = {fieldName, count: fieldAnalysis.length};
     try {
       fieldStat.format = _.chain(fieldAnalysis)
-        .countBy("format")
+        .countBy('format')
         .map((value, key) => ({count: value, type: key}))
-        .sortBy("count")
+        .sortBy('count')
         .reverse()
         .head()
-        .get("type")
+        .get('type')
         .value();
     } catch (e) {
       console.log(e);
     }
     fieldStat.hasMediaUrls = fieldAnalysis.some(fa => Boolean(fa.hasMediaUrls));
-    const lengths = _.map(fieldAnalysis, "length");
+    const lengths = _.map(fieldAnalysis, 'length');
     fieldStat.minLength = ss.min(lengths);
     fieldStat.maxLength = ss.max(lengths);
     fieldStat.meanLength = ss.mean(lengths).toFixed(2);
