@@ -65,10 +65,12 @@ module.exports = {
         const updateOn = fieldMapping[Object.keys(fieldMapping).find(key => fieldMapping[key][ID_KEY])]['destination'];
         const itemsMap = await getItemsMap(items, fieldMapping);
         for (const item in itemsMap) {
-          try{
-            await strapi.services[contentType].update({[updateOn]: item}, itemsMap[item]);
-          }catch (exception){
-            console.error(exception);
+          if (!(itemsMap[item] && Object.keys(itemsMap[item]).length === 0 && itemsMap[item].constructor === Object)) {
+            try {
+              await strapi.services[contentType].update({[updateOn]: item}, itemsMap[item]);
+            } catch (exception) {
+              console.error(exception);
+            }
           }
         }
       }
@@ -76,9 +78,9 @@ module.exports = {
       async function createEntities(items) {
         for (const item of items) {
           const entity = await importFields(item, fieldMapping);
-          try{
+          try {
             await strapi.services[contentType].create(entity);
-          }catch (exception){
+          } catch (exception) {
             console.error(exception);
           }
         }
