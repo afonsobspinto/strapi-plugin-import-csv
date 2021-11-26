@@ -23,7 +23,7 @@ const resolveDataFromRequest = async ctx => {
 };
 
 const getItemsFromData = ({ dataType, body, options }) =>
-  new Promise(async (resolve, reject) => {
+  new Promise((resolve, reject) => {
     const parsedContentType = contentTypeParser(dataType);
     if (dataType === 'text/csv' || dataType === 'application/vnd.ms-excel') {
       const items = CsvParser(body, {
